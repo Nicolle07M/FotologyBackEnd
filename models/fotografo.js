@@ -13,16 +13,15 @@ Fotografo.create = (fotografo, result) => {
       created_at,
       updated_at
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
 
   db.query(
     sql,
     [
       fotografo.email,
-      fotografo.name,
-      fotografo.lastname,
-      fotografo.phone,
+      fotografo.username,
+      fotografo.adress,
       fotografo.image,
       fotografo.password,
       new Date(),
