@@ -1,8 +1,9 @@
 const db = require('../config/config.js');
+const bcrypt = require('bcryptjs');
 
 const Fotografo = {};
-
-Fotografo.create = (fotografo, result) => {
+Fotografo.create = async (fotografo, result) => {
+  const hash = await bcrypt.hash(user.password, 10);
   const sql = `
     INSERT INTO fotografo (
       email,
@@ -24,16 +25,19 @@ Fotografo.create = (fotografo, result) => {
       fotografo.adress,
       fotografo.image,
       fotografo.password,
+      hash,
       new Date(),
       new Date()
-    ],
-    (err, res) => {
+    ], (err, res) => {
       if (err) {
-        console.log('error: ', err);
+        console.log('Error al crear el usuario: ', err);
         result(err, null);
       } else {
-        console.log('Id del nuevo Usuario: ', res.insertId);
-        result(null, res.insertId);
+        console.log('Usuario creado: ', {id: res.insertId, ...fotografo
+
+        });
+
+        result(null, {id: res.insertId, ...fotografo });
       }
     }
   );
