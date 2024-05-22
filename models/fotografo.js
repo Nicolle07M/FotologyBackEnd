@@ -2,8 +2,37 @@ const db = require('../config/config.js');
 const bcrypt = require('bcryptjs');
 
 const Fotografo = {};
+
+Fotografo.findById = (id, result) => {
+  const sql = `SELECT id, email, username, adress, image, password FROM fotografo WHERE id = ?`;
+  db.query(sql, [id], (err, fotografo) => {
+    if (err) {
+      console.log('Error al consultar: ', err);
+      result(err, null);
+    } else {
+      console.log('Usuario consultado: ', fotografo[0]);
+      result(null, fotografo[0]);
+    }
+  });
+};
+
+Fotografo.findByEmail = (email, result) => {
+  const sql = `SELECT id, email, username, adress, image, password FROM fotografo WHERE email = ?`;
+  db.query(sql, [email], (err, fotografo) => {
+    if (err) {
+      console.log('Error al consultar: ', err);
+      result(err, null);
+    } else {
+      console.log('Usuario consultado: ', fotografo[0]);
+      result(null, fotografo[0]);
+    }
+  });
+};
+
+
+
 Fotografo.create = async (fotografo, result) => {
-  const hash = await bcrypt.hash(user.password, 10);
+  const hash = await bcrypt.hash(fotografo.password, 10);
   const sql = `
     INSERT INTO fotografo (
       email,
@@ -24,7 +53,6 @@ Fotografo.create = async (fotografo, result) => {
       fotografo.username,
       fotografo.adress,
       fotografo.image,
-      fotografo.password,
       hash,
       new Date(),
       new Date()
@@ -32,7 +60,8 @@ Fotografo.create = async (fotografo, result) => {
       if (err) {
         console.log('Error al crear el usuario: ', err);
         result(err, null);
-      } else {
+      }
+      else {
         console.log('Usuario creado: ', {id: res.insertId, ...fotografo
 
         });
